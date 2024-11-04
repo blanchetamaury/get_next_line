@@ -12,8 +12,7 @@
 
 #include "get_next_line_bonus.h"
 
-
-size_t 	ft_strlen(char *s)
+size_t	ft_strlen(char *s)
 {
 	int	i;
 
@@ -25,24 +24,23 @@ size_t 	ft_strlen(char *s)
 	return (i);
 }
 
-void	ft_bzero(void *s, size_t  n)
+char	*ft_invalid(char *line, int bytesread)
 {
-	ft_memset(s, 0, n);
+	if (bytesread == -1)
+	{
+		free(line);
+		return (NULL);
+	}
+	return (line);
 }
 
-void	*ft_calloc(size_t  nmemb, size_t  size)
+void	free_buffer(char **buf, int fd)
 {
-	void	*str;
-
-	if (nmemb == 0 || size == 0)
-		return (malloc(0));
-	if (nmemb > (size_t) - 1 / size)
-		return (NULL);
-	str = malloc(size * nmemb);
-	if (str == NULL)
-		return (NULL);
-	ft_bzero(str, nmemb * size);
-	return (str);
+	if (buf[fd])
+	{
+		free(buf[fd]);
+		buf[fd] = NULL;
+	}
 }
 
 int	ft_strchr(char *s, int c)
@@ -65,11 +63,9 @@ char	*ft_strjoin(char *str, char *src, int len)
 	int		j;
 	char	*new;
 
-	if (!str)
-		return (str = ft_calloc(1, sizeof(char)));
 	if (!src)
 		return (str);
-	new = ft_calloc((ft_strlen(str) + len + 1), sizeof(char));
+	new = malloc(sizeof(char) * (ft_strlen(str) + len + 1));
 	if (new == 0)
 		return (0);
 	i = 0;
@@ -84,6 +80,7 @@ char	*ft_strjoin(char *str, char *src, int len)
 		new[i + j] = src[j];
 		j++;
 	}
+	new[i + j] = '\0';
 	free(str);
 	return (new);
 }

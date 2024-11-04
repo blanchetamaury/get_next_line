@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #ifndef GET_NEXT_LINE_BONUS_H
 # define GET_NEXT_LINE_BONUS_H
 
@@ -20,8 +19,8 @@
 
 char	*get_next_line(int fd);
 char	*ft_memset(char *s, int c, size_t n);
-void	ft_bzero(void *s, size_t n);
-void	*ft_calloc(size_t nmemb, size_t size);
+char	*ft_invalid(char *line, int bytesread);
+void	free_buffer(char **buf, int fd);
 int		ft_strchr(char *s, int c);
 char	*ft_strjoin(char *str, char *src, int len);
 size_t	ft_strlen(char *s);
