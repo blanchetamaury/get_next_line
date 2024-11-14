@@ -13,8 +13,10 @@
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
-# include <fcntl.h>
-# include <stdio.h>
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 10
+# endif
+
 # include <unistd.h>
 # include <stdlib.h>
 
@@ -25,6 +27,5 @@ void	*ft_calloc(size_t nmemb, size_t size);
 int		ft_strchr(char *s, int c);
 char	*ft_strjoin(char *str, char *src, int len);
 size_t	ft_strlen(char *s);
-size_t	ft_strlcpy(char *dst, char *src, size_t size);
 
 #endif

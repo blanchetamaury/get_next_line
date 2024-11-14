@@ -25,7 +25,7 @@ char	*ft_memset(char *s, int c, size_t n)
 	return (s);
 }
 
-size_t	ft_strlcpy(char *dst, char *src, size_t size)
+static size_t	ft_strlcpy(char *dst, char *src, size_t size)
 {
 	size_t	i;
 
@@ -44,11 +44,11 @@ size_t	ft_strlcpy(char *dst, char *src, size_t size)
 	return (ft_strlen(src) + i);
 }
 
-char	*ft_res(char *line, char **buf, int fd)
+static char	*ft_rest(char *line, char **buf, int fd)
 {
 	int			len;
 
-	while (ft_strlen(buf[fd]) > 0)
+	if (ft_strlen(buf[fd]) > 0)
 	{
 		len = ft_strchr(buf[fd], '\n');
 		if (len > 0)
@@ -66,7 +66,7 @@ char	*ft_res(char *line, char **buf, int fd)
 	return (line);
 }
 
-char	*ft_line(char **buf, char *line, int fd)
+static char	*ft_line(char **buf, char *line, int fd)
 {
 	int	bytesread;
 	int	len;
@@ -98,7 +98,7 @@ char	*get_next_line(int fd)
 	static char		*buf[1024];
 	char			*line;
 
-	if (fd < 0 || fd > 1024 || BUFFER_SIZE <= 0)
+	if (fd < 0 || fd >= 1024)
 		return (NULL);
 	if (!buf[fd])
 	{
@@ -111,7 +111,7 @@ char	*get_next_line(int fd)
 	if (line == 0)
 		return (NULL);
 	line = ft_memset(line, 0, 1);
-	line = ft_res(line, buf, fd);
+	line = ft_rest(line, buf, fd);
 	if (ft_strchr(line, '\n') >= 0)
 		return (line);
 	line = ft_line(buf, line, fd);

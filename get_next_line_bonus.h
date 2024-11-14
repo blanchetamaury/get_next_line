@@ -13,7 +13,10 @@
 #ifndef GET_NEXT_LINE_BONUS_H
 # define GET_NEXT_LINE_BONUS_H
 
-# include <fcntl.h>
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 10
+# endif
+
 # include <unistd.h>
 # include <stdlib.h>
 
@@ -24,6 +27,5 @@ void	free_buffer(char **buf, int fd);
 int		ft_strchr(char *s, int c);
 char	*ft_strjoin(char *str, char *src, int len);
 size_t	ft_strlen(char *s);
-size_t	ft_strlcpy(char *dst, char *src, size_t size);
 
 #endif

@@ -25,7 +25,7 @@ char	*ft_memset(char *s, int c, size_t n)
 	return (s);
 }
 
-size_t	ft_strlcpy(char *dst, char *src, size_t size)
+static size_t	ft_strlcpy(char *dst, char *src, size_t size)
 {
 	size_t	i;
 
@@ -44,33 +44,33 @@ size_t	ft_strlcpy(char *dst, char *src, size_t size)
 	return (ft_strlen(src) + i);
 }
 
-char	*ft_res(char *line, char *buf, int bytesread, int i)
+static char	*ft_rest(char *line, char *buf, int bytesread, int i)
 {
-	static char	res[BUFFER_SIZE];
+	static char	rest[BUFFER_SIZE];
 	int			len;
 
-	while (ft_strlen(res) > 0)
+	if (ft_strlen(rest) > 0)
 	{
-		len = ft_strchr(res, '\n');
+		len = ft_strchr(rest, '\n');
 		if (len > 0)
 		{
-			line = ft_strjoin(line, res, len);
-			ft_strlcpy(res, &res[len], BUFFER_SIZE - len);
+			line = ft_strjoin(line, rest, len);
+			ft_strlcpy(rest, &rest[len], BUFFER_SIZE - len);
 			free(buf);
 			return (line);
 		}
 		else
 		{
-			line = ft_strjoin(line, res, BUFFER_SIZE);
-			ft_memset(res, 0, BUFFER_SIZE);
+			line = ft_strjoin(line, rest, BUFFER_SIZE);
+			ft_memset(rest, 0, BUFFER_SIZE);
 		}
 	}
 	if (bytesread > 0)
-		ft_strlcpy(res, &buf[i], bytesread);
+		ft_strlcpy(rest, &buf[i], bytesread);
 	return (line);
 }
 
-char	*ft_line(char *buf, char *line, int fd)
+static char	*ft_line(char *buf, char *line, int fd)
 {
 	int	bytesread;
 	int	len;
@@ -83,7 +83,7 @@ char	*ft_line(char *buf, char *line, int fd)
 		if (len >= 0)
 		{
 			line = ft_strjoin(line, buf, len);
-			ft_res(line, buf, BUFFER_SIZE - len, len);
+			ft_rest(line, buf, BUFFER_SIZE - len, len);
 			free(buf);
 			return (line);
 		}
@@ -104,14 +104,15 @@ char	*get_next_line(int fd)
 	char		*buf;
 	char		*line;
 
-	if (fd == -1)
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (0);
 	buf = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
+	if (buf == 0)
+		return (0);
 	line = ft_calloc(BUFFER_SIZE, sizeof(char));
-	line = ft_memset(line, 0, BUFFER_SIZE);
 	if (line == 0)
 		return (0);
-	line = ft_res(line, buf, 0, 0);
+	line = ft_rest(line, buf, 0, 0);
 	if (ft_strchr(line, '\n') > 0)
 		return (line);
 	line = ft_line(buf, line, fd);
