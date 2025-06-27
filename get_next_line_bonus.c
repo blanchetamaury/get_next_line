@@ -48,7 +48,7 @@ static char	*ft_rest(char *line, char **buf, int fd)
 {
 	int			len;
 
-	if (ft_strlen(buf[fd]) > 0)
+	while (ft_strlen(buf[fd]) > 0)
 	{
 		len = ft_strchr(buf[fd], '\n');
 		if (len > 0)
@@ -98,7 +98,7 @@ char	*get_next_line(int fd)
 	static char		*buf[1024];
 	char			*line;
 
-	if (fd < 0 || fd >= 1024)
+	if (fd < 0 || fd > 1024)
 		return (NULL);
 	if (!buf[fd])
 	{

@@ -49,7 +49,7 @@ static char	*ft_rest(char *line, char *buf, int bytesread, int i)
 	static char	rest[BUFFER_SIZE];
 	int			len;
 
-	if (ft_strlen(rest) > 0)
+	while (ft_strlen(rest) > 0)
 	{
 		len = ft_strchr(rest, '\n');
 		if (len > 0)
@@ -104,12 +104,11 @@ char	*get_next_line(int fd)
 	char		*buf;
 	char		*line;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (fd < 0)
 		return (0);
 	buf = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
-	if (buf == 0)
-		return (0);
 	line = ft_calloc(BUFFER_SIZE, sizeof(char));
+	line = ft_memset(line, 0, BUFFER_SIZE);
 	if (line == 0)
 		return (0);
 	line = ft_rest(line, buf, 0, 0);
